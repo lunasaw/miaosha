@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  * rabbitMq配置
  * 为方便初学者启动项目，暂时注释掉@Configuration，需要使用请去除@Configuration
  */
-//@Configuration
+@Configuration
 public class RabbitMqConfig {
 
     @Bean

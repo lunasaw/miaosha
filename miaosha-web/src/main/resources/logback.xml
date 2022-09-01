@@ -1,0 +1,59 @@
+<configuration>
+
+    <property name="logRoot" value="/Users/weidian/document/project/miaosha"/>
+    <property name="pattern" value="%d %p [%t] %c{2} %X{traceId:--} %m%n"/>
+    <property name="logHistory" value="7"/>
+
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logRoot}/miaosha.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${logRoot}/miaosha.log.%d{yyyy-MM-dd}.%i</fileNamePattern>
+            <maxHistory>3</maxHistory>
+            <maxFileSize>500MB</maxFileSize>
+            <!--启动时清理日志文件  此项置灰清理超过保留天数的  也会清理超过总大小的-->
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logRoot}/info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${logRoot}/info.log.%d{yyyy-MM-dd}.%i</fileNamePattern>
+            <maxHistory>${logHistory}</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+            <maxFileSize>500MB</maxFileSize>
+            <!--启动时清理日志文件  此项置灰清理超过保留天数的  也会清理超过总大小的-->
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!--输出到控制台-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>
+        <encoder>
+            <Pattern>${pattern}</Pattern>
+            <!-- 设置字符集 -->
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <root level="${logLevel}">
+        <appender-ref ref="ERROR"/>
+        <appender-ref ref="INFO"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
